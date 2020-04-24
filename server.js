@@ -1,4 +1,4 @@
-const {ApolloServer} = require("apollo-server");
+const {ApolloServer, PubSub} = require("apollo-server");
 const gql = require("graphql-tag");
 
 const mockUser = {
@@ -7,13 +7,20 @@ const mockUser = {
   createdAt: 2316546987,
 };
 
+const pubSub = new PubSub();
+const NEW_ITEM_EVENT = "NEW_ITEM_EVENT";
+
 const typeDefs = gql`
   type Query {
     me: User!
     settings(user: ID!): Settings!
   }
-  type Mutations {
+  type Mutation {
     createSettings(input: CreateSettingsInput): Settings!
+    createItem(task: String!): Item!
+  }
+  type Subscription {
+    newItem: Item
   }
 
   type User {
@@ -35,6 +42,10 @@ const typeDefs = gql`
     user: ID!
     theme: Theme!
   }
+
+  type Item {
+    task: String
+  }
 `;
 
 const resolvers = {
@@ -49,12 +60,23 @@ const resolvers = {
       };
     },
   },
-  Mutations: {
+  Mutation: {
     createSettings(_, {input}) {
       return {
         user: mockUser.id,
         theme: "DARK",
       };
+    },
+    createItem(_, {task}) {
+      const item = {task};
+      const payload = {newItem: item};
+      pubSub.publish(NEW_ITEM_EVENT, payload);
+      return item;
+    },
+  },
+  Subscription: {
+    newItem: {
+      subscribe: () => pubSub.asyncIterator(NEW_ITEM_EVENT),
     },
   },
   Settings: {
@@ -67,9 +89,15 @@ const resolvers = {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context() {
-    // gets created on every request
+  // gets created on every request
+  context({connection}) {
+    if (connection) {
+      return {...connection.context};
+    }
     return {};
+  },
+  subscriptions: {
+    onConnect(params) {},
   },
 });
 
