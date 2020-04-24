@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`queries feed 1`] = `
+exports[`schema testing queries feed 1`] = `
 Object {
   "data": Object {
     "feed": Array [

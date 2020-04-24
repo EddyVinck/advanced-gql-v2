@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const {models} = require("./db");
 const secret = "catpack";
+const {AuthenticationError} = require("apollo-server");
 
 /**
  * takes a user object and creates  jwt out of it
@@ -31,7 +32,7 @@ const getUserFromToken = (token) => {
  */
 const authenticated = (next) => (root, args, context, info) => {
   const {user} = context;
-  if (!user) throw new Error("Not authenticated!");
+  if (!user) throw new AuthenticationError("Not authenticated!");
   return next(root, args, context, info);
 };
 
