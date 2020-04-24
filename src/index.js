@@ -1,8 +1,19 @@
-const {ApolloServer} = require("apollo-server");
+const {
+  ApolloServer,
+  AuthenticationError,
+  UserInputError,
+  ApolloError,
+} = require("apollo-server");
 const typeDefs = require("./typedefs");
 const resolvers = require("./resolvers");
 const {createToken, getUserFromToken} = require("./auth");
 const db = require("./db");
+
+class MyCustomError extends ApolloError {
+  constructor(message) {
+    super(message, "OHNOYOUHAVEANERROR");
+  }
+}
 
 /**
  * @param {{ authorization: string }} reqHeaders
@@ -16,6 +27,11 @@ const getUserFromReqHeaders = (reqHeaders) => {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  formatError(e) {
+    // <any error tracking here>
+    // can also change the `extensions` of the error object here if you like
+    return e;
+  },
   context({req, connection}) {
     const context = {...db};
     if (connection) {
@@ -28,7 +44,7 @@ const server = new ApolloServer({
     onConnect(params /* includes everything from req.headers */) {
       console.log(params);
       const user = getUserFromReqHeaders(params);
-      if (!user) throw new Error("nope"); // only do this if you need someone to be authenticated when using any of your subscriptions
+      if (!user) throw new AuthenticationError("nope"); // only do this if you need someone to be authenticated when using any of your subscriptions
       return {...db, user, createToken};
     },
   },
