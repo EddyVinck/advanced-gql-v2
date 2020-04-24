@@ -19,6 +19,37 @@
       "id": "aamUsDkOLV7admWz3sxys"
     }
   ],
-  "posts": [],
+  "posts": [
+    {
+      "message": "this quarantine is getting old",
+      "author": "aamUsDkOLV7admWz3sxys",
+      "createdAt": 1587722986549,
+      "id": "hHgy0_ztUVM2ruXx4kqko"
+    },
+    {
+      "message": "this quarantine is getting old",
+      "author": "aamUsDkOLV7admWz3sxys",
+      "createdAt": 1587723007713,
+      "id": "nhnkj5lOS1xvY60Wa-c_f"
+    },
+    {
+      "message": "this quarantine is getting old",
+      "author": "aamUsDkOLV7admWz3sxys",
+      "createdAt": 1587723013777,
+      "id": "5zLK49xUp_uNJ07kLC2WX"
+    },
+    {
+      "message": "this quarantine is getting old yo",
+      "author": "aamUsDkOLV7admWz3sxys",
+      "createdAt": 1587723380654,
+      "id": "-2LP8EHwax7uZ0Ex-p9mM"
+    },
+    {
+      "message": "this quarantine is getting old yo",
+      "author": "aamUsDkOLV7admWz3sxys",
+      "createdAt": 1587723391126,
+      "id": "CyIUTE6wGLOASv4WmViTd"
+    }
+  ],
   "settings": []
 }
