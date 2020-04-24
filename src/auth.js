@@ -29,7 +29,11 @@ const getUserFromToken = (token) => {
  * continues to the next resolver if true
  * @param {Function} next next resolver function ro run
  */
-const authenticated = (next) => (root, args, context, info) => {};
+const authenticated = (next) => (root, args, context, info) => {
+  const {user} = context;
+  if (!user) throw new Error("Not authenticated!");
+  return next(root, args, context, info);
+};
 
 /**
  * checks if the user on the context has the specified role.
@@ -37,7 +41,15 @@ const authenticated = (next) => (root, args, context, info) => {};
  * @param {String} role enum role to check for
  * @param {Function} next next resolver function to run
  */
-const authorized = (role, next) => (root, args, context, info) => {};
+const authorized = (role, next) => (root, args, context, info) => {
+  const {
+    user: {userRole},
+  } = context;
+
+  if (userRole !== role)
+    throw new Error(`Not authorized! Must be an "${role}" to do this."`);
+  return next(root, args, context, info);
+};
 
 module.exports = {
   getUserFromToken,
