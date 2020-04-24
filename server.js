@@ -1,4 +1,4 @@
-const { ApolloServer } = require("apollo-server");
+const {ApolloServer} = require("apollo-server");
 const gql = require("graphql-tag");
 
 const mockUser = {
@@ -40,9 +40,9 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     me() {
-      return { ...mockUser };
+      return {...mockUser};
     },
-    settings(_, { user }) {
+    settings(_, {user}) {
       return {
         user,
         theme: "DARK",
@@ -50,7 +50,7 @@ const resolvers = {
     },
   },
   Mutations: {
-    createSettings(_, { input }) {
+    createSettings(_, {input}) {
       return {
         user: mockUser.id,
         theme: "DARK",
@@ -59,7 +59,7 @@ const resolvers = {
   },
   Settings: {
     user(_settings) {
-      return { ...mockUser };
+      return {...mockUser};
     },
   },
 };
@@ -67,6 +67,10 @@ const resolvers = {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context() {
+    // gets created on every request
+    return {};
+  },
 });
 
-server.listen().then(({ url }) => console.log(`server on ${url}`));
+server.listen().then(({url}) => console.log(`server on ${url}`));

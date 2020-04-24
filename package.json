@@ -7,13 +7,15 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js --ignore 'src/db/db.json'",
-    "test": "jest tests"
+    "test": "jest tests",
+    "pretty": "prettier --write \"./**/*.{js,json}\""
   },
   "devDependencies": {
     "apollo-server-testing": "^2.9.6",
     "jest": "^24.9.0",
     "mdx-deck": "^3.0.13",
-    "nodemon": "^1.19.4"
+    "nodemon": "^1.19.4",
+    "prettier": "^2.0.5"
   },
   "dependencies": {
     "@mdx-deck/themes": "^3.0.8",
