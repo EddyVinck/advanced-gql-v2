@@ -4,6 +4,8 @@ module.exports = gql`
   directive @formatDate(
     defaultFormat: String = "MMM dd, yyyy"
   ) on FIELD_DEFINITION
+  directive @authorize(role: Role! = ADMIN) on FIELD_DEFINITION
+  directive @authenticate on FIELD_DEFINITION
 
   enum Theme {
     DARK
@@ -89,7 +91,7 @@ module.exports = gql`
   }
 
   type Query {
-    me: User!
+    me: User! @authenticate
     posts: [Post]!
     post(id: ID!): Post!
     userSettings: Settings!
@@ -100,7 +102,7 @@ module.exports = gql`
     updateSettings(input: UpdateSettingsInput!): Settings!
     createPost(input: NewPostInput!): Post!
     updateMe(input: UpdateUserInput!): User
-    invite(input: InviteInput!): Invite!
+    invite(input: InviteInput!): Invite! @authenticate @authorize(role: ADMIN)
     signup(input: SignupInput!): AuthUser!
     signin(input: SigninInput!): AuthUser!
   }

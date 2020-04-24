@@ -8,7 +8,11 @@ const typeDefs = require("./typedefs");
 const resolvers = require("./resolvers");
 const {createToken, getUserFromToken} = require("./auth");
 const db = require("./db");
-const {FormatDateDirective} = require("./directives");
+const {
+  FormatDateDirective,
+  AuthorizationDirective,
+  AuthenticationDirective,
+} = require("./directives");
 
 class MyCustomError extends ApolloError {
   constructor(message) {
@@ -35,6 +39,8 @@ const server = new ApolloServer({
   },
   schemaDirectives: {
     formatDate: FormatDateDirective,
+    authenticate: AuthenticationDirective,
+    authorize: AuthorizationDirective,
   },
   context({req, connection}) {
     const context = {...db};
